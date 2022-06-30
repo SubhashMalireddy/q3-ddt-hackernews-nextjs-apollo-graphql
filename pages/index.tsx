@@ -2,10 +2,10 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import classNames from 'classnames'
 import LinkList from '../components/LinkList'
-
-const Home: NextPage = () => {
+import { gql } from '@apollo/client';
+import { client } from './_app'
+const Home: NextPage = ({ data }: any) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -15,10 +15,33 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <LinkList />
+        <LinkList linksToRender={data} />
       </main>
     </div>
   )
+}
+
+const FEED_QUERY = gql`
+  {
+    feed {
+      id
+      links {
+        id
+        createdAt
+        url
+        description
+      }
+    }
+  }
+`
+  ;
+
+export async function getServerSideProps() {
+  const { data } = await client.query({
+    query: FEED_QUERY
+  })
+
+  return { props: { data } }
 }
 
 export default Home

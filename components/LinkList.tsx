@@ -1,35 +1,14 @@
 import React from 'react';
 import Link from './Link';
-import { useQuery, gql } from '@apollo/client';
 
-const FEED_QUERY = gql`
-  {
-    feed {
-      id
-      links {
-        id
-        createdAt
-        url
-        description
-      }
-    }
-  }
-`
-    ;
-
-const LinkList = () => {
-    const { data, loading } = useQuery(FEED_QUERY);
-
+const LinkList = ({ linksToRender }: any) => {
+  //The following line is commented and left in the code for reference purpose.
+  // const { data, loading } = useQuery(FEED_QUERY);
     return (
-        <div>
-            {loading && (
-                <p>Apollo is fetching data for you. 🐶 ⃗🦴 ⃗🙋</p>
-            )
-
-            }
-            {data && (
+      <div>
+        {linksToRender && (
                 <>
-                    {data.feed.links.map((link: any) => (
+            {linksToRender.feed.links.map((link: any) => (
                         <Link key={link.id} link={link} />
                     ))}
                 </>
