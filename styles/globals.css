@@ -1,4 +1,8 @@
 @import "https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css";
+:root {
+  --height200: 200px;
+  --primary-bg-color: #4a4a4a;
+}
 body {
   margin: 0;
   padding: 0;
@@ -8,6 +12,21 @@ body {
   input {
     max-width: 500px;
   }
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-height: var(--height200);
+  background-color: var(--primary-bg-color);
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: var(--height200);
+  background-color: var(--primary-bg-color);
+}
   
   .gray {
     color: #828282;

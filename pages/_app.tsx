@@ -6,6 +6,7 @@ import {
   createHttpLink,
   InMemoryCache
 } from '@apollo/client';
+import Layout from '../components/Layout';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000'
@@ -19,7 +20,9 @@ export const client = new ApolloClient({
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
+      <Layout>
       <Component {...pageProps} />
+      </Layout>
     </ApolloProvider>
   )
 }

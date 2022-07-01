@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import styles from '../styles/CreateLink.module.css'
-import { useMutation, gql } from '@apollo/client';
+import { useMutation, gql, ApolloError } from '@apollo/client';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const CREATE_LINK_MUTATION = gql`
   mutation PostMutation(
@@ -22,11 +23,21 @@ const CreateLink = () => {
         description: '',
         url: ''
     });
+    const router = useRouter()
 
     const [createLink] = useMutation(CREATE_LINK_MUTATION, {
         variables: {
             description: formState.description,
             url: formState.url
+        },
+        onCompleted: (data: any) => {
+            alert(`Link with description: ${data.post.description}is successfully created along with its Unique id: ${data.post.id}`)
+            formState.description = ''
+            formState.url = ''
+            router.push('/')
+        },
+        onError: (error: ApolloError) => {
+            alert(`Following errors occoured \n ${error}.`)
         }
     });
 
@@ -35,18 +46,7 @@ const CreateLink = () => {
             <form
                 onSubmit={async (e) => {
                     e.preventDefault();
-                    try {
-                        const { data, errors } = await createLink()
-                        if (!errors) {
-                            alert(`Link with description: ${data.post.desription}is successfully created along with its Unique id: ${data.post.id}`)
-                            formState.description = ''
-                            formState.url = ''
-                        } else {
-                            alert(`Following errors occoured ${errors}`)
-                        }
-                    } catch (e) {
-                        alert('Something went wrong! Please try again.')
-                    }
+                    await createLink()
                 }}
                 className={styles.centerForm}
             >
@@ -77,7 +77,7 @@ const CreateLink = () => {
                     />
                 </div>
                 <button type="submit">Submit</button>
-                <Link href={'/'}><a className="link">Back to Home</a></Link>
+                {/* <Link href={'/'}><a className="link">Back to Home</a></Link> */}
             </form>
         </div>
     );
