@@ -42,3 +42,12 @@ body {
   cursor: pointer;
   max-width: 250px;
 }
+.hundredVH {
+  height: 100vh;
+}
+
+.link {
+  display: block;
+  width: fit-content;
+  margin: 10px auto;
+}
